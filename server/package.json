@@ -1,14 +1,19 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "commonjs",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "mysql-migrations": "^1.0.6",
     "nodemon": "^2.0.4"
   },
   "scripts": {
-    "start": "nodemon server.js"
-  }
+    "start": "nodemon index.js"
+  },
+  "devDependencies": {}
 }
