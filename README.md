@@ -16,3 +16,9 @@ Simple web server running on the [Linux Alpine image](https://hub.docker.com/_/a
 ### Server directory
 
 Node running on `node:12` image ([from here](https://nodejs.org/de/docs/guides/nodejs-docker-webapp/))
+
+### Database directory
+
+Using Docker compose image for MySQL 5.7
+
+- Access CLI for mysql `docker exec -it docker_spending_db_1 mysql -uroot -p` (or `-u<username used for db creation>` i.e. `-uuser`)
