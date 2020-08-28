@@ -3,7 +3,7 @@
 Resources:
 
 - [Jake Wright](https://www.youtube.com/watch?v=Qw9zlE3t8Ko&t=248s) has super easy Docker tutorials
-- Remember to use `docker-compose up` (add the `--build` flag whenever changing the Dockerfiles!!!)
+- Remember to use `docker-compose up` (add the `--build` flag whenever changing the Dockerfiles!!!). This was an issue with getting `nodemon` to work, but then you built it again and it was fine.
 
 ### Web directory
 

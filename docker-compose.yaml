@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   web:
@@ -7,6 +7,8 @@ services:
       - ./web:/usr/src/app
     ports:
       - 5000:8080
+    depends_on:
+      - node-server
 
   node-server:
     build: ./server
