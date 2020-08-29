@@ -1,5 +1,7 @@
 ### Docker practice
 
+To run this just clone the repo, have Docker installed, and run `docker-compose up` from the repo root. This will spin up a node instance, `http-server` instance, and a `mysql` database instance.
+
 Resources:
 
 - [Jake Wright](https://www.youtube.com/watch?v=Qw9zlE3t8Ko&t=248s) has super easy Docker tutorials
