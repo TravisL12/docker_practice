@@ -10,6 +10,7 @@
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "mysql-migrations": "^1.0.6",
+    "node-mysql-helper": "^0.6.7",
     "nodemon": "^2.0.4"
   },
   "scripts": {

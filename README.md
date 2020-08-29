@@ -29,3 +29,7 @@ Using Docker compose image for MySQL 5.7
 - Add migration `docker exec -it docker_practice_node-server_1 node migrations.js add migration create_table_users`
 - Run migrations `docker exec -it docker_practice_node-server_1 node migrations.js up` (or `down`)
 - Refresh migrations `docker exec -it docker_practice_node-server_1 node migrations.js refresh`.
+
+#### TODO:
+
+Check out https://github.com/gdbate/node-mysql-helper

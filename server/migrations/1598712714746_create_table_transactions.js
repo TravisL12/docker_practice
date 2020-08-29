@@ -14,8 +14,8 @@ module.exports = {
         user_id INT,
         FOREIGN KEY (user_id)
             REFERENCES users(id),
-        createdAt DATE NOT NULL,
-        updatedAt DATE NOT NULL
+        created_at DATE,
+        updated_at DATE
     )`,
   down: "DROP TABLE transactions",
 };

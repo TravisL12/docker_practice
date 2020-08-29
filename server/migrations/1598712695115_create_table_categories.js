@@ -5,8 +5,8 @@ module.exports = {
         parent_category_id INT,
         FOREIGN KEY (parent_category_id)
             REFERENCES categories(id),
-        createdAt DATE NOT NULL,
-        updatedAt DATE NOT NULL
+        createdAt DATE,
+        updatedAt DATE
     )`,
   down: "DROP TABLE categories",
 };
