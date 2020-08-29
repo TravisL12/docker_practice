@@ -1,10 +1,11 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
     build: ./web
     volumes:
       - ./web:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - 5000:8080
 
@@ -12,6 +13,7 @@ services:
     build: ./server
     volumes:
       - ./server:/usr/src/app
+      - /usr/src/app/node_modules
     environment:
       - APP_PORT=8080
     ports:
@@ -23,11 +25,11 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: "db"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: "password"
     ports:
-      - '5002:3306'
+      - "5002:3306"
     volumes:
       - ./db:/var/lib/mysql
