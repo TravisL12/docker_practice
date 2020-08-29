@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const mysql = require("node-mysql-helper");
 const transactionController = require("./controllers/transactions");
 const app = express();
+
 app.use(cors());
+app.use(bodyParser.json());
 
 const PORT = process.env.APP_PORT;
 const HOST = "mysql-db";
@@ -24,8 +27,8 @@ app.get("/", (req, res) => {
   res.send({ data: "Hi Trav" });
 });
 
-app.get("/seed", async (req, res) => {
-  await transactionController.add(mysql);
+app.post("/seed", async (req, res) => {
+  await transactionController.add(mysql, req.body);
 
   res.send({ data: "Inserting" });
 });
