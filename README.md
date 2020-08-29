@@ -22,6 +22,6 @@ Node running on `node:12` image ([from here](https://nodejs.org/de/docs/guides/n
 Using Docker compose image for MySQL 5.7
 
 - Get database container name `docker ps` (use NAMES column value)
-- Access CLI for mysql `docker exec -it docker_spending_db_1 mysql -uroot -p` (or `-u<username used for db creation>` i.e. `-uuser`)
-- Add migration `docker exec -it docker_spending_node-server_1 node migrations.js add migration create_table_users`
-- Run migrations `docker exec -it docker_spending_node-server_1 node migrations.js up` (or `down`)
+- Access CLI for mysql `docker exec -it docker_practice_db_1 mysql -uroot -p` (or `-u<username used for db creation>` i.e. `-uuser`)
+- Add migration `docker exec -it docker_practice_node-server_1 node migrations.js add migration create_table_users`
+- Run migrations `docker exec -it docker_practice_node-server_1 node migrations.js up` (or `down`)
