@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("node-mysql-helper");
 const transactionController = require("./controllers/transactions");
+const { asyncForEach } = require("./utilities/helpers");
 const app = express();
 
 app.use(cors());
@@ -34,15 +35,13 @@ app.get("/", async (req, res) => {
   }
 });
 
-async function asyncForEach(array, callback) {
-  for (let i = 0; i < array.length; i++) {
-    await callback(mysql, array[i]);
-  }
-}
-
 app.post("/seed", async (req, res) => {
-  await asyncForEach(req.body, transactionController.add);
-  res.send({ data: "Inserting" });
+  try {
+    await asyncForEach(req.body, transactionController.add);
+    res.send({ data: "Inserting" });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.listen(PORT);

@@ -1,5 +1,6 @@
 const csvForm = document.getElementById("csv-input");
 const fileInput = document.getElementById("file-input");
+const table = document.getElementById("data-table");
 
 const buildData = (row, header) => {
   return header.reduce((acc, colName, idx) => {
@@ -47,11 +48,37 @@ function postData(rows) {
     });
 }
 
+function buildRow(values, isHeader = false) {
+  const row = document.createElement("tr");
+  values.forEach((value) => {
+    const col = document.createElement(isHeader ? "th" : "td");
+    col.textContent = value;
+    row.appendChild(col);
+  });
+
+  return row;
+}
+
+function buildTable(data = []) {
+  if (data.length === 0) return;
+
+  const headerRow = table.querySelector("thead tr");
+  if (!headerRow) {
+    const row = buildRow(Object.keys(data[0]), true);
+    table.querySelector("thead").appendChild(row);
+  }
+
+  data.splice(1).forEach((row) => {
+    const el = buildRow(Object.values(row));
+    table.querySelector("tbody").appendChild(el);
+  });
+}
+
 async function getData() {
   await fetch("http://0.0.0.0:5005/")
     .then((resp) => resp.json())
     .then(({ data }) => {
-      console.log(data, "from the server");
+      buildTable(data);
     });
 }
 
