@@ -23,8 +23,15 @@ const mysqlOptions = {
 
 mysql.connect(mysqlOptions);
 
-app.get("/", (req, res) => {
-  res.send({ data: "Hi Trav" });
+app.get("/", async (req, res) => {
+  try {
+    const data = await mysql.query(
+      "select * from transactions WHERE date BETWEEN CURDATE() - INTERVAL 365 DAY AND CURDATE()"
+    );
+    res.send({ data });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 async function asyncForEach(array, callback) {

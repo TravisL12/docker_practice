@@ -29,11 +29,11 @@ csvForm.addEventListener("submit", (event) => {
   for (let i = 0; i < data.length / step; i++) {
     const min = i * step;
     const max = i * step + step;
-    fetchData(data.slice(min, max));
+    postData(data.slice(min, max));
   }
 });
 
-function fetchData(rows) {
+function postData(rows) {
   return fetch("http://0.0.0.0:5005/seed", {
     method: "POST",
     headers: {
@@ -46,3 +46,13 @@ function fetchData(rows) {
       console.log(data, "from the server");
     });
 }
+
+async function getData() {
+  await fetch("http://0.0.0.0:5005/")
+    .then((resp) => resp.json())
+    .then(({ data }) => {
+      console.log(data, "from the server");
+    });
+}
+
+getData();
