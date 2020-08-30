@@ -15,7 +15,8 @@ module.exports = {
         FOREIGN KEY (user_id)
             REFERENCES users(id),
         created_at DATE,
-        updated_at DATE
+        updated_at DATE,
+        UNIQUE KEY desc_date_amount(description,date,amount)
     )`,
   down: "DROP TABLE transactions",
 };

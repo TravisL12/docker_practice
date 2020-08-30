@@ -27,9 +27,14 @@ app.get("/", (req, res) => {
   res.send({ data: "Hi Trav" });
 });
 
-app.post("/seed", async (req, res) => {
-  await transactionController.add(mysql, req.body);
+async function asyncForEach(array, callback) {
+  for (let i = 0; i < array.length; i++) {
+    await callback(mysql, array[i]);
+  }
+}
 
+app.post("/seed", async (req, res) => {
+  await asyncForEach(req.body, transactionController.add);
   res.send({ data: "Inserting" });
 });
 

@@ -7,35 +7,41 @@ async function getCategory(mysql, name, parentId) {
       name,
       parent_category_id: parentId,
     });
-    category = await mysql.record("categories", newCategory.insertId);
+
+    if (newCategory) {
+      category = await mysql.record("categories", newCategory.insertId);
+    }
   }
 
-  return category.id;
+  return category && category.id ? category.id : null;
 }
 
 module.exports = {
   add: async (mysql, item) => {
-    const categoryId = await getCategory(mysql, item.category);
-    const subcategoryId = await getCategory(
-      mysql,
-      item.subcategory,
-      categoryId
-    );
+    const { amount, category, date, description, payee, subcategory } = item;
 
     const transaction = {
-      description: item.description,
-      payee: item.payee,
-      amount: Math.abs(1000),
-      date: new Date(),
+      description: description.replace(/\s+/g, " "),
+      payee,
+      amount: Math.abs(+amount),
+      date: new Date(date),
       user_id: 1,
-      category_id: categoryId,
-      sub_category_id: subcategoryId,
       created_at: new Date(),
       updated_at: new Date(),
     };
 
-    await mysql.insert("transactions", transaction);
+    const categoryId = await getCategory(mysql, category);
+    const subcategoryId = await getCategory(mysql, subcategory, categoryId);
 
-    return;
+    if (categoryId) {
+      transaction.category_id = categoryId;
+    }
+    if (subcategoryId) {
+      transaction.sub_category_id = subcategoryId;
+    }
+
+    mysql.insert("transactions", transaction).catch(function (err) {
+      console.log("Error creating new transaction, mysql error:", err.message);
+    });
   },
 };
