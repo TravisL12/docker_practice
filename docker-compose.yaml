@@ -8,6 +8,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - 5004:8080
+    depends_on:
+      - node-server
 
   node-server:
     build: ./server

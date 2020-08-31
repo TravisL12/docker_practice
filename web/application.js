@@ -63,15 +63,16 @@ function buildRow(values, isHeader = false) {
 function buildTable(data = []) {
   if (data.length === 0) return;
 
-  const headerRow = table.querySelector("thead tr");
-  if (!headerRow) {
-    const row = buildRow(Object.keys(data[0]), true);
-    table.querySelector("thead").appendChild(row);
-  }
+  const thead = table.querySelector("thead");
+  thead.innerHTML = "";
+  const row = buildRow(Object.keys(data[0]), true);
+  thead.appendChild(row);
 
+  const tbody = table.querySelector("tbody");
+  tbody.innerHTML = "";
   data.splice(1).forEach((row) => {
     const el = buildRow(Object.values(row));
-    table.querySelector("tbody").appendChild(el);
+    tbody.appendChild(el);
   });
 }
 

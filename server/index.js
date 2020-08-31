@@ -30,7 +30,7 @@ app.get("/", async (req, res) => {
       ? `description like '%${req.query.likeQuery}%' and`
       : "";
     const data = await mysql.query(
-      `select description, date, amount from transactions WHERE ${likeQuery} date BETWEEN CURDATE() - INTERVAL 365 DAY AND CURDATE()`
+      `select description, date, amount from transactions WHERE ${likeQuery} date BETWEEN CURDATE() - INTERVAL 365 DAY AND CURDATE() order by date`
     );
     res.send({ data });
   } catch (error) {

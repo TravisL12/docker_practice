@@ -7,13 +7,17 @@
   <body>
     <div>
       <form id="csv-input">
+        <div><label for="file-input">Upload CSV</label></div>
         <input type="file" id="file-input" />
         <button type="submit">Upload</button>
       </form>
+
       <form id="search-form">
-        <input type="text" placeholder="search query" />
+        <div><label for="search-input">Search</label></div>
+        <input type="text" id="search-input" placeholder="search query" />
         <button type="submit">Search</button>
       </form>
+
       <table id="data-table">
         <thead></thead>
         <tbody></tbody>
