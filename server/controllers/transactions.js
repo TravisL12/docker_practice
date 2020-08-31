@@ -24,11 +24,22 @@ module.exports = {
   add: async (mysql, item) => {
     const { amount, category, date, description, payee, subcategory } = item;
 
+    // parse date from description (more accurate transaction date)
+    const dateRe = new RegExp(/((^\d{1,2}|\s\d{1,2})\/\d{2}\s)/);
+    let newDate = description.match(dateRe);
+
+    if (newDate) {
+      const year = new Date(date).getFullYear(); // used to get the year
+      newDate = [year, newDate[0].trim()].join('-');
+    } else {
+      newDate = date;
+    }
+
     const transaction = {
       description: cleanDescription(description),
       payee,
       amount: Math.abs(+amount) * 100,
-      date: new Date(date),
+      date: new Date(newDate),
       user_id: 1,
       created_at: new Date(),
       updated_at: new Date(),
@@ -46,6 +57,7 @@ module.exports = {
 
     mysql.insert('transactions', transaction).catch(function (err) {
       console.log('Error creating new transaction, mysql error:', err.message);
+      console.table({ item, transaction });
     });
   },
 };
