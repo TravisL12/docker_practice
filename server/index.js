@@ -26,8 +26,11 @@ mysql.connect(mysqlOptions);
 
 app.get("/", async (req, res) => {
   try {
+    const likeQuery = req.query.likeQuery
+      ? `description like '%${req.query.likeQuery}%' and`
+      : "";
     const data = await mysql.query(
-      "select * from transactions WHERE date BETWEEN CURDATE() - INTERVAL 365 DAY AND CURDATE()"
+      `select description, date, amount from transactions WHERE ${likeQuery} date BETWEEN CURDATE() - INTERVAL 365 DAY AND CURDATE()`
     );
     res.send({ data });
   } catch (error) {
@@ -37,7 +40,7 @@ app.get("/", async (req, res) => {
 
 app.post("/seed", async (req, res) => {
   try {
-    await asyncForEach(req.body, transactionController.add);
+    await asyncForEach(mysql, req.body, transactionController.add);
     res.send({ data: "Inserting" });
   } catch (error) {
     console.log(error);

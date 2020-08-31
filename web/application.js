@@ -1,4 +1,5 @@
 const csvForm = document.getElementById("csv-input");
+const searchForm = document.getElementById("search-form");
 const fileInput = document.getElementById("file-input");
 const table = document.getElementById("data-table");
 
@@ -74,12 +75,16 @@ function buildTable(data = []) {
   });
 }
 
-async function getData() {
-  await fetch("http://0.0.0.0:5005/")
+async function getData(query = "") {
+  await fetch(`http://0.0.0.0:5005/?likeQuery=${query}`)
     .then((resp) => resp.json())
     .then(({ data }) => {
       buildTable(data);
     });
 }
 
-getData();
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const query = searchForm.querySelector("input").value;
+  getData(query);
+});

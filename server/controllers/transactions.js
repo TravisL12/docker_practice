@@ -21,7 +21,7 @@ module.exports = {
     const { amount, category, date, description, payee, subcategory } = item;
 
     const transaction = {
-      description: description.replace(/\s+/g, " "),
+      description: description.replace(/\s+/g, " ").replace(/(.)\1{2,}/g, ""),
       payee,
       amount: Math.abs(+amount),
       date: new Date(date),
