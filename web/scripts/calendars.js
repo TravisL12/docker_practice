@@ -47,7 +47,11 @@ export function buildCalendarData(data) {
 }
 
 function buildMonth(data) {
-  const startDow = new Date(data.year, data.month, 1).getDay();
+  const date = new Date(data.year, data.month);
+  const prettyMonth = date.toLocaleDateString('en-US', {
+    month: 'long',
+  });
+  const startDow = date.getDay();
   const dayCount = new Date(data.year, data.month + 1, 0).getDate();
   const days = Array.from({ length: dayCount }, (v, k) => k + 1);
 
@@ -55,17 +59,11 @@ function buildMonth(data) {
   monthWrapperEl.classList = 'month-wrapper';
 
   const monthEl = document.createElement('div');
-  monthEl.classList = 'month';
+  monthEl.classList = `month ${prettyMonth.toLowerCase()}`;
 
   const title = document.createElement('div');
   title.classList = 'month-title';
-  title.textContent = new Date(data.year, data.month).toLocaleDateString(
-    'en-US',
-    {
-      month: 'long',
-      year: 'numeric',
-    }
-  );
+  title.textContent = `${prettyMonth} ${data.year}`;
   monthWrapperEl.appendChild(title);
 
   for (let i = 0; i < days.length; i++) {

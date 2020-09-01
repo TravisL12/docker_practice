@@ -27,7 +27,7 @@ html {
   padding: 5px;
 }
 
-.day.zero {
+.month .day.zero {
   background: #f7fdff;
   border: 1px solid lightgray;
 }
@@ -35,4 +35,41 @@ html {
 .day .total {
   padding-top: 15px;
   align-self: center;
+}
+
+.january .day {
+  background: rgb(146, 219, 146);
+}
+.february .day {
+  background: rgb(113, 137, 165);
+}
+.march .day {
+  background: rgb(209, 162, 153);
+}
+.april .day {
+  background: rgb(121, 209, 168);
+}
+.may .day {
+  background: rgb(223, 224, 131);
+}
+.june .day {
+  background: rgb(124, 236, 227);
+}
+.july .day {
+  background: rgb(159, 117, 184);
+}
+.august .day {
+  background: rgb(187, 176, 116);
+}
+.september .day {
+  background: rgb(238, 99, 196);
+}
+.october .day {
+  background: rgb(120, 212, 101);
+}
+.november .day {
+  background: rgb(255, 136, 0);
+}
+.december .day {
+  background: rgb(129, 145, 218);
 }
