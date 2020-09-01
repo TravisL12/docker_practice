@@ -57,7 +57,7 @@ module.exports = {
 
     mysql.insert('transactions', transaction).catch(function (err) {
       console.log('Error creating new transaction, mysql error:', err.message);
-      console.table({ item, transaction });
+      console.table('Error item:', item.description);
     });
   },
 };

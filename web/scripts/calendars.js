@@ -1,5 +1,7 @@
+import { currencyRounded } from './utilities.js';
+
 const splitDate = (date) => {
-  date = new Date(date.replace("Z", ""));
+  date = new Date(date.replace('Z', ''));
   const day = date.getDate();
   const month = date.getMonth();
   const year = date.getFullYear();
@@ -18,9 +20,9 @@ function sum(data) {
   }, 0);
 }
 
-const calendars = document.querySelector(".calendars");
+const calendars = document.querySelector('.calendars');
 export function buildCalendarData(data) {
-  calendars.innerHTML = "";
+  calendars.innerHTML = '';
   const dates = {};
   data.forEach((trans) => {
     const { day, month, year } = splitDate(trans.date);
@@ -48,21 +50,39 @@ function buildMonth(data) {
   const startDow = new Date(data.year, data.month, 1).getDay();
   const dayCount = new Date(data.year, data.month + 1, 0).getDate();
   const days = Array.from({ length: dayCount }, (v, k) => k + 1);
-  const monthEl = document.createElement("div");
-  monthEl.classList = "month";
+
+  const monthWrapperEl = document.createElement('div');
+  monthWrapperEl.classList = 'month-wrapper';
+
+  const monthEl = document.createElement('div');
+  monthEl.classList = 'month';
+
+  const title = document.createElement('div');
+  title.classList = 'month-title';
+  title.textContent = new Date(data.year, data.month).toLocaleDateString(
+    'en-US',
+    {
+      month: 'long',
+      year: 'numeric',
+    }
+  );
+  monthWrapperEl.appendChild(title);
 
   for (let i = 0; i < days.length; i++) {
     const dayValue = days[i];
     const dayData = data.days[dayValue];
-    const dayEl = document.createElement("div");
-    dayEl.classList = "day";
+    const dayEl = document.createElement('div');
+    dayEl.classList = 'day';
+    const amount = dayData ? sum(dayData) : 0;
+    dayEl.classList.toggle('zero', !amount);
     dayEl.innerHTML = `
-        <div>${+data.month + 1}-${dayValue}-${data.year}</div>
-        <div>${dayData ? sum(dayData) / 100 : 0}</div>`;
+        <div>${dayValue}</div>
+        <div class="total">${currencyRounded(amount)}</div>`;
     if (i === 0) {
-      dayEl.style["gridColumnStart"] = startDow + 1;
+      dayEl.style['gridColumnStart'] = startDow + 1;
     }
     monthEl.appendChild(dayEl);
   }
-  calendars.appendChild(monthEl);
+  monthWrapperEl.appendChild(monthEl);
+  calendars.appendChild(monthWrapperEl);
 }
