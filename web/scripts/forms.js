@@ -40,6 +40,5 @@ fileInput.addEventListener('change', (event) => {
     data = rows.slice(1).map((row) => {
       return buildData(row, header);
     });
-    console.log(data);
   };
 });

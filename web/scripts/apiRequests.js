@@ -5,7 +5,7 @@ export async function getData(query = '') {
   await fetch(`http://0.0.0.0:5005/?likeQuery=${query}`)
     .then((resp) => resp.json())
     .then(({ data }) => {
-      // buildTable([...data]);
+      buildTable([...data]);
       buildCalendarData(data);
     });
 }
