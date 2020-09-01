@@ -34,7 +34,7 @@ export function buildCalendarData(data) {
   const calendarMap = Object.keys(dates).reduce((acc, year) => {
     const yearData = dates[year];
     const monthsData = Object.keys(yearData).map((month) => {
-      return { year, month, days: yearData[month] };
+      return { year: +year, month: +month, days: yearData[month] };
     });
     return acc.concat(monthsData);
   }, []);
