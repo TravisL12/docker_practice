@@ -1,4 +1,4 @@
-import { getData, postData } from "./application.js";
+import { getData, postData } from "./apiRequests.js";
 
 const buildData = (row, header) => {
   return header.reduce((acc, colName, idx) => {
