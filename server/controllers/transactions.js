@@ -31,6 +31,11 @@ module.exports = {
     if (newDate) {
       const year = new Date(date).getFullYear(); // used to get the year
       newDate = [year, newDate[0].trim()].join('-');
+
+      // no future stuff
+      if (new Date() < new Date(newDate)) {
+        newDate = date;
+      }
     } else {
       newDate = date;
     }
@@ -38,7 +43,7 @@ module.exports = {
     const transaction = {
       description: cleanDescription(description),
       payee,
-      amount: Math.abs(+amount) * 100,
+      amount: +amount.replace(/[$,]/g, '') * 100,
       date: new Date(newDate),
       user_id: 1,
       created_at: new Date(),

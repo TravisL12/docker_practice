@@ -1,14 +1,16 @@
-import { getData, postData } from "./apiRequests.js";
+import { getData, postData } from './apiRequests.js';
 
 const buildData = (row, header) => {
   return header.reduce((acc, colName, idx) => {
-    acc[colName.trim()] = row[idx].trim();
+    if (!row[idx]) return acc;
+    const headerName = colName === 'Master Category' ? 'Category' : colName;
+    acc[headerName.toLowerCase().trim()] = row[idx].trim();
     return acc;
   }, {});
 };
 
-const csvForm = document.getElementById("csv-input");
-csvForm.addEventListener("submit", (event) => {
+const csvForm = document.getElementById('csv-input');
+csvForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const step = 100;
   for (let i = 0; i < data.length / step; i++) {
@@ -18,25 +20,26 @@ csvForm.addEventListener("submit", (event) => {
   }
 });
 
-const searchForm = document.getElementById("search-form");
-searchForm.addEventListener("submit", (event) => {
+const searchForm = document.getElementById('search-form');
+searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const query = searchForm.querySelector("input").value;
+  const query = searchForm.querySelector('input').value;
   getData(query);
 });
 
 let data;
-const fileInput = document.getElementById("file-input");
-fileInput.addEventListener("change", (event) => {
+const fileInput = document.getElementById('file-input');
+fileInput.addEventListener('change', (event) => {
   event.preventDefault();
   const files = event.target.files[0];
   const reader = new FileReader();
   reader.readAsText(files);
   reader.onload = function (e) {
-    const rows = e.target.result.split("\n");
-    const header = rows[0].split("\t");
+    const rows = Papa.parse(e.target.result).data;
+    const header = rows[0];
     data = rows.slice(1).map((row) => {
-      return buildData(row.split("\t"), header);
+      return buildData(row, header);
     });
+    console.log(data);
   };
 });
