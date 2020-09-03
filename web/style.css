@@ -21,6 +21,7 @@ html {
 }
 
 .day {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: lightblue;
