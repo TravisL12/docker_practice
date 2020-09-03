@@ -16,8 +16,8 @@ services:
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
-    environment:
-      - NODE_PORT=${NODE_PORT}
+    env_file:
+      - ./.env
     ports:
       - 5005:8080
     depends_on:
@@ -26,11 +26,8 @@ services:
   mysql-db:
     image: mysql:5.7
     restart: always
-    environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    env_file:
+      - ./.env
     ports:
       - "5006:3306"
     volumes:
