@@ -1,44 +1,12 @@
-import { currencyRounded } from "./utilities.js";
-
-const createElement = (tag, options) => {
-  const el = document.createElement(tag);
-  el.classList = options.classList;
-  el.textContent = options.textContent;
-  return el;
-};
-
-const splitDate = (date) => {
-  date = new Date(date.replace("Z", ""));
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-
-  return {
-    date: new Date(year, month, day),
-    day,
-    month,
-    year,
-  };
-};
-
-function sum(data) {
-  return data.reduce((total, d) => {
-    return total + d.amount;
-  }, 0);
-}
-
-const weekDaysEl = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-].map((day) =>
-  createElement("div", { classList: "day-name", textContent: day })
-);
+import {
+  localDateString,
+  currencyRounded,
+  createElement,
+  splitDate,
+  sum,
+} from "./utilities.js";
 const calendars = document.querySelector(".calendars");
+
 export function buildCalendarData(data) {
   calendars.innerHTML = "";
   const dates = {};
@@ -64,41 +32,52 @@ export function buildCalendarData(data) {
   }
 }
 
+function buildDay(dayData, dayValue, startDow) {
+  const dayEl = createElement("div", { classList: "day" });
+  const amount = dayData ? sum(dayData) : 0;
+  if (dayValue - 1 === 0) dayEl.style["gridColumnStart"] = startDow + 1;
+
+  const totalEl = amount
+    ? `<div class="total">${currencyRounded(amount)}</div>`
+    : "";
+
+  dayEl.innerHTML = `
+    <div class="date">${dayValue}</div>
+    ${totalEl}
+    `;
+  return dayEl;
+}
+
 function buildMonth(data) {
   const date = new Date(data.year, data.month);
   const startDow = date.getDay();
   const dayCount = new Date(data.year, data.month + 1, 0).getDate();
   const days = Array.from({ length: dayCount }, (v, k) => k + 1);
-  const prettyMonth = date.toLocaleDateString("en-US", {
+  const prettyMonth = localDateString(date, {
     month: "long",
   });
+
   const monthWrapperEl = createElement("div", {
     classList: `month-wrapper ${prettyMonth.toLowerCase()}`,
   });
+
   const monthEl = createElement("div", {
     classList: "month",
   });
 
-  const title = createElement("div", {
+  const titleEl = createElement("div", {
     classList: "month-title",
     textContent: `${prettyMonth} ${data.year}`,
   });
-  monthWrapperEl.appendChild(title);
 
   for (let i = 0; i < days.length; i++) {
     const dayValue = days[i];
     const dayData = data.days[dayValue];
-    const dayEl = createElement("div", { classList: "day" });
-    const amount = dayData ? sum(dayData) : 0;
-    dayEl.innerHTML = `
-        <div class="date">${dayValue}</div>
-        <div class="total">${currencyRounded(amount)}</div>
-    `;
-    if (i === 0) {
-      dayEl.style["gridColumnStart"] = startDow + 1;
-    }
+    const dayEl = buildDay(dayData, dayValue, startDow);
     monthEl.appendChild(dayEl);
   }
+
+  monthWrapperEl.appendChild(titleEl);
   monthWrapperEl.appendChild(monthEl);
   calendars.appendChild(monthWrapperEl);
 }
