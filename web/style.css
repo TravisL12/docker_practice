@@ -1,76 +1,82 @@
+:root {
+  --grid-size: 100px;
+}
+
 html {
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .calendars {
   display: grid;
-  grid-column-gap: 30px;
-  grid-row-gap: 50px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 
 .month-title {
-  padding: 10px 50px;
+  padding-bottom: 10px;
+}
+
+.month-wrapper {
+  padding: 10px;
 }
 
 .month {
   display: grid;
   grid-gap: 5px;
-  grid-template-columns: repeat(7, 80px);
-  grid-auto-rows: 80px;
+  grid-template-columns: repeat(7, var(--grid-size));
+  grid-template-rows: repeat(6, var(--grid-size));
 }
 
 .day {
   position: relative;
   display: flex;
   flex-direction: column;
-  background: lightblue;
-  padding: 5px;
+  background: #f7fdff;
+  border: 1px solid #888;
+  padding: 2px;
 }
 
-.month .day.zero {
-  background: #f7fdff;
-  border: 1px solid lightgray;
+.day .date {
+  font-size: 12px;
 }
 
 .day .total {
-  padding-top: 15px;
+  padding-top: 20px;
   align-self: center;
 }
 
-.january .day {
-  background: rgb(146, 219, 146);
+.january {
+  background: hsl(120, 50%, 80%);
 }
-.february .day {
-  background: rgb(113, 137, 165);
+.february {
+  background: hsl(212, 22%, 80%);
 }
-.march .day {
-  background: rgb(209, 162, 153);
+.march {
+  background: hsl(10, 38%, 80%);
 }
-.april .day {
-  background: rgb(121, 209, 168);
+.april {
+  background: hsl(152, 49%, 80%);
 }
-.may .day {
-  background: rgb(223, 224, 131);
+.may {
+  background: hsl(61, 60%, 80%);
 }
-.june .day {
-  background: rgb(124, 236, 227);
+.june {
+  background: hsl(175, 75%, 80%);
 }
-.july .day {
-  background: rgb(159, 117, 184);
+.july {
+  background: hsl(278, 32%, 80%);
 }
-.august .day {
-  background: rgb(187, 176, 116);
+.august {
+  background: hsl(51, 34%, 80%);
 }
-.september .day {
-  background: rgb(238, 99, 196);
+.september {
+  background: hsl(318, 80%, 80%);
 }
-.october .day {
-  background: rgb(120, 212, 101);
+.october {
+  background: hsl(110, 56%, 80%);
 }
-.november .day {
-  background: rgb(255, 136, 0);
+.november {
+  background: hsl(32, 100%, 80%);
 }
-.december .day {
-  background: rgb(129, 145, 218);
+.december {
+  background: hsl(229, 55%, 80%);
 }

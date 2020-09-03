@@ -3,6 +3,7 @@ import { currencyRounded } from "./utilities.js";
 const createElement = (tag, options) => {
   const el = document.createElement(tag);
   el.classList = options.classList;
+  el.textContent = options.textContent;
   return el;
 };
 
@@ -26,6 +27,17 @@ function sum(data) {
   }, 0);
 }
 
+const weekDaysEl = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+].map((day) =>
+  createElement("div", { classList: "day-name", textContent: day })
+);
 const calendars = document.querySelector(".calendars");
 export function buildCalendarData(data) {
   calendars.innerHTML = "";
@@ -54,19 +66,23 @@ export function buildCalendarData(data) {
 
 function buildMonth(data) {
   const date = new Date(data.year, data.month);
-  const prettyMonth = date.toLocaleDateString("en-US", {
-    month: "long",
-  });
   const startDow = date.getDay();
   const dayCount = new Date(data.year, data.month + 1, 0).getDate();
   const days = Array.from({ length: dayCount }, (v, k) => k + 1);
-  const monthWrapperEl = createElement("div", { classList: "month-wrapper" });
+  const prettyMonth = date.toLocaleDateString("en-US", {
+    month: "long",
+  });
+  const monthWrapperEl = createElement("div", {
+    classList: `month-wrapper ${prettyMonth.toLowerCase()}`,
+  });
   const monthEl = createElement("div", {
-    classList: `month ${prettyMonth.toLowerCase()}`,
+    classList: "month",
   });
 
-  const title = createElement("div", { classList: "month-title" });
-  title.textContent = `${prettyMonth} ${data.year}`;
+  const title = createElement("div", {
+    classList: "month-title",
+    textContent: `${prettyMonth} ${data.year}`,
+  });
   monthWrapperEl.appendChild(title);
 
   for (let i = 0; i < days.length; i++) {
@@ -74,9 +90,8 @@ function buildMonth(data) {
     const dayData = data.days[dayValue];
     const dayEl = createElement("div", { classList: "day" });
     const amount = dayData ? sum(dayData) : 0;
-    dayEl.classList.toggle("zero", !amount);
     dayEl.innerHTML = `
-        <div>${dayValue}</div>
+        <div class="date">${dayValue}</div>
         <div class="total">${currencyRounded(amount)}</div>
     `;
     if (i === 0) {
