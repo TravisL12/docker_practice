@@ -1,5 +1,12 @@
 :root {
-  --grid-size: 100px;
+  --grid-size: 125px;
+}
+
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 html {
@@ -52,6 +59,24 @@ body {
 }
 
 .day .total {
+}
+
+.day .query-list {
+  align-self: flex-end;
+  font-size: 12px;
+}
+.day .query-list li {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.day .query-list li .query-accent {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 2px;
+  background: red;
 }
 
 .january {
