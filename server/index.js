@@ -45,13 +45,20 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/monthly", async (req, res) => {
+  const monthCount = 20;
   try {
+    const likeQuery = req.query.likeQuery
+      ? `and description like '%${req.query.likeQuery}%' `
+      : "";
+
+    // category 89 === outgoing transfers
     const data = await mysql.query(`
-  SELECT DATE_FORMAT(date, "%Y-%m") AS Month, SUM(amount) as sum
-  FROM transactions
-  GROUP BY DATE_FORMAT(date, "%Y-%m") 
-  order by Month desc
-  limit 20
+      SELECT DATE_FORMAT(date, "%Y-%m") AS Month, SUM(amount) as sum
+      FROM transactions
+      where category_id != 89 ${likeQuery}
+      GROUP BY DATE_FORMAT(date, "%Y-%m") 
+      order by Month desc
+      limit ${monthCount}
   `);
 
     res.send({ data });
