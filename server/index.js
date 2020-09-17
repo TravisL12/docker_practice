@@ -3,7 +3,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("node-mysql-helper");
 const transactionController = require("./controllers/transactions");
-const { asyncForEach } = require("./utilities/helpers");
 const app = express();
 
 app.use(cors());
@@ -39,6 +38,22 @@ app.get("/", async (req, res) => {
       LIMIT
         1000`
     );
+    res.send({ data });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/monthly", async (req, res) => {
+  try {
+    const data = await mysql.query(`
+  SELECT DATE_FORMAT(date, "%Y-%m") AS Month, SUM(amount) as sum
+  FROM transactions
+  GROUP BY DATE_FORMAT(date, "%Y-%m") 
+  order by Month desc
+  limit 20
+  `);
+
     res.send({ data });
   } catch (error) {
     console.log(error);
