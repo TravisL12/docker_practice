@@ -27,17 +27,19 @@ mysql.connect(mysqlOptions);
 app.get("/", async (req, res) => {
   try {
     const likeQuery = req.query.likeQuery
-      ? `WHERE description like '%${req.query.likeQuery}%' `
+      ? `and description like '%${req.query.likeQuery}%' `
       : "";
 
     const data = await mysql.query(
       `SELECT 
-        description, date, amount from transactions    
-      ${likeQuery}
+        t.description, t.payee, t.date, t.amount, cat.name category, subcat.name subcategory from transactions t
+        left join categories cat on t.category_id = cat.id
+        left join categories subcat on t.sub_category_id = subcat.id
+      where description not like 'ONLINE TRANSFER TO%' ${likeQuery}
       ORDER BY
         date desc
       LIMIT
-        1000`
+        5000`
     );
     res.send({ data });
   } catch (error) {
@@ -52,11 +54,11 @@ app.get("/monthly", async (req, res) => {
       ? `and description like '%${req.query.likeQuery}%' `
       : "";
 
-    // category 89 === outgoing transfers
+    // category 93 === outgoing transfers
     const data = await mysql.query(`
       SELECT DATE_FORMAT(date, "%Y-%m") AS Month, SUM(amount) as sum
       FROM transactions
-      where category_id != 89 ${likeQuery}
+      where category_id != 93 ${likeQuery}
       GROUP BY DATE_FORMAT(date, "%Y-%m") 
       order by Month desc
       limit ${monthCount}

@@ -25,10 +25,10 @@ Using Docker compose image for MySQL 5.7
 
 - Using [`mysql-migrations`](https://github.com/kawadhiya21/mysql-migrations) with [`mysql`](https://github.com/mysqljs/mysql) to handle database.
 - Get database container name `docker ps` (use NAMES column value)
-- Access CLI for mysql `docker exec -it docker_practice_mysql-db_1 mysql -uroot -p` (or `-u<username used for db creation>` i.e. `-uuser`)
-- Add migration `docker exec -it docker_practice_node-server_1 node migrations.js add migration create_table_users`
-- Run migrations `docker exec -it docker_practice_node-server_1 node migrations.js up` (or `down`)
-- Refresh migrations `docker exec -it docker_practice_node-server_1 node migrations.js refresh`.
+- Access CLI for mysql `docker exec -it backend_mysql-db_1 mysql -uroot -p` (or `-u<username used for db creation>` i.e. `-uuser`)
+- Add migration `docker exec -it backend_node-server_1 node migrations.js add migration create_table_users`
+- Run migrations `docker exec -it backend_node-server_1 node migrations.js up` (or `down`)
+- Refresh migrations `docker exec -it backend_node-server_1 node migrations.js refresh`.
 
 #### TODO:
 
