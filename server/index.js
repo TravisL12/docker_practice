@@ -1,34 +1,34 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const mysql = require('node-mysql-helper');
-const transactionController = require('./controllers/transactions');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const mysql = require("node-mysql-helper");
+const transactionController = require("./controllers/transactions");
 const app = express();
-const { asyncForEach } = require('./utilities/helpers');
+const { asyncForEach } = require("./utilities/helpers");
 
 app.use(cors());
 app.use(bodyParser.json());
 
 const PORT = process.env.NODE_PORT;
-const HOST = 'mysql-db';
+const HOST = "mysql-db";
 
 const mysqlOptions = {
   host: `${HOST}`,
-  port: '3306',
-  user: 'root',
-  password: 'password',
-  database: 'db',
+  port: "3306",
+  user: "root",
+  password: "password",
+  database: "db",
   socketPath: false,
   connectionLimit: 5,
 };
 
 mysql.connect(mysqlOptions);
 
-app.get('/spending', async (req, res) => {
+app.get("/spending", async (req, res) => {
   try {
     const likeQuery = req.query.likeQuery
       ? `and description like '%${req.query.likeQuery}%' `
-      : '';
+      : "";
 
     const data = await mysql.query(
       `SELECT 
@@ -39,7 +39,7 @@ app.get('/spending', async (req, res) => {
       ORDER BY
         date desc
       LIMIT
-        5000`
+        20000`
     );
     res.send({ data });
   } catch (error) {
@@ -47,10 +47,10 @@ app.get('/spending', async (req, res) => {
   }
 });
 
-app.get('/spending/date', async (req, res) => {
+app.get("/spending/date", async (req, res) => {
   try {
-    const dateStart = '2012-03-11';
-    const dateEnd = '2020-12-11';
+    const dateStart = "2012-03-11";
+    const dateEnd = "2020-12-11";
     const dateRange = `and t.date between '${dateStart}' and '${dateEnd}' `;
 
     const data = await mysql.query(
@@ -69,12 +69,12 @@ app.get('/spending/date', async (req, res) => {
   }
 });
 
-app.get('/monthly', async (req, res) => {
+app.get("/monthly", async (req, res) => {
   const monthCount = 20;
   try {
     const likeQuery = req.query.likeQuery
       ? `and description like '%${req.query.likeQuery}%' `
-      : '';
+      : "";
 
     // category 93 === outgoing transfers
     const data = await mysql.query(`
@@ -92,10 +92,10 @@ app.get('/monthly', async (req, res) => {
   }
 });
 
-app.post('/spending/add', async (req, res) => {
+app.post("/spending/add", async (req, res) => {
   try {
     await asyncForEach(mysql, req.body, transactionController.add);
-    res.send({ data: 'Inserting' });
+    res.send({ data: "Inserting" });
   } catch (error) {
     console.log(error);
   }
