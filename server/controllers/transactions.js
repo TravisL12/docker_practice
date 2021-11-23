@@ -1,15 +1,15 @@
 async function getCategory(mysql, name, parentId) {
   if (!name) return name;
 
-  let category = await mysql.record('categories', { name });
+  let category = await mysql.record("categories", { name });
   if (!category) {
-    const newCategory = await mysql.insert('categories', {
+    const newCategory = await mysql.insert("categories", {
       name,
       parent_category_id: parentId,
     });
 
     if (newCategory) {
-      category = await mysql.record('categories', newCategory.insertId);
+      category = await mysql.record("categories", newCategory.insertId);
     }
   }
 
@@ -17,7 +17,7 @@ async function getCategory(mysql, name, parentId) {
 }
 
 function cleanDescription(description) {
-  return description.replace(/\s+/g, ' ').replace(/(.)\1{2,}/g, '');
+  return description.replace(/\s+/g, " ").replace(/(.)\1{2,}/g, "");
 }
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
 
     if (newDate) {
       const year = new Date(date).getFullYear(); // used to get the year
-      newDate = [year, newDate[0].trim()].join('-');
+      newDate = [year, newDate[0].trim()].join("-");
 
       // no future stuff
       if (new Date() < new Date(newDate)) {
@@ -43,7 +43,7 @@ module.exports = {
     const transaction = {
       description: cleanDescription(description),
       payee,
-      amount: +amount.replace(/[$,]/g, '') * 100,
+      amount: +amount.replace(/[$,]/g, "") * 100,
       date: new Date(newDate),
       user_id: 1,
       created_at: new Date(),
@@ -60,9 +60,11 @@ module.exports = {
       transaction.sub_category_id = subcategoryId;
     }
 
-    mysql.insert('transactions', transaction).catch(function (err) {
-      console.log('Error creating new transaction, mysql error:', err.message);
-      console.table('Error item:', item.description);
-    });
+    try {
+      const inserted = await mysql.insert("transactions", transaction);
+      console.log("New Transaction Entered!", inserted);
+    } catch (err) {
+      console.log("Error transaction:", err.message);
+    }
   },
 };
