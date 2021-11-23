@@ -16,13 +16,24 @@ async function getCategory(mysql, name, parentId) {
   return category && category.id ? category.id : null;
 }
 
-function cleanDescription(description) {
+function cleanDescription(description = "") {
   return description.replace(/\s+/g, " ").replace(/(.)\1{2,}/g, "");
 }
 
 module.exports = {
   add: async (mysql, item) => {
-    const { amount, category, date, description, payee, subcategory } = item;
+    if (!item) {
+      return;
+    }
+
+    const {
+      amount = "0",
+      category,
+      date,
+      description = "",
+      payee,
+      subcategory,
+    } = item;
 
     // parse date from description (more accurate transaction date)
     const dateRe = new RegExp(/((^\d{1,2}|\s\d{1,2})\/\d{2}\s)/);
@@ -62,9 +73,17 @@ module.exports = {
 
     try {
       const inserted = await mysql.insert("transactions", transaction);
-      console.log("New Transaction Entered!", inserted);
+      const newTrans = await mysql.query(
+        `SELECT 
+        t.description, t.payee, t.date, t.amount, cat.name category, subcat.name subcategory from transactions t
+        left join categories cat on t.category_id = cat.id
+        left join categories subcat on t.sub_category_id = subcat.id
+        where description not like 'ONLINE TRANSFER TO%' and t.id=${inserted.insertId}`
+      );
+      return { ...newTrans[0] };
     } catch (err) {
-      console.log("Error transaction:", err.message);
+      // console.log("Error transaction:", err.message);
+      return;
     }
   },
 };

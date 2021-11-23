@@ -30,6 +30,13 @@ Using Docker compose image for MySQL 5.7
 - Run migrations `docker exec -it backend_node-server_1 node migrations.js up` (or `down`)
 - Refresh migrations `docker exec -it backend_node-server_1 node migrations.js refresh`.
 
+##### Login to MySQL CLI
+
+- `docker exec -it backend_mysql-db_1 mysql -uroot -p`
+- `show databases;`
+- `use db;` (db name set in .env file)
+- `delete from transactions where id > 100000;` (example for deleting)
+
 #### TODO:
 
 Check out https://github.com/gdbate/node-mysql-helper

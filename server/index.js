@@ -94,8 +94,8 @@ app.get("/monthly", async (req, res) => {
 
 app.post("/spending/add", async (req, res) => {
   try {
-    await asyncForEach(mysql, req.body, transactionController.add);
-    res.send({ data: "Inserting" });
+    const data = await asyncForEach(mysql, req.body, transactionController.add);
+    res.send({ data });
   } catch (error) {
     console.log(error);
   }
