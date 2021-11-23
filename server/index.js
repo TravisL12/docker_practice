@@ -51,11 +51,7 @@ app.get("/spending/date", async (req, res) => {
     const dateRange = `and t.date between '${dateStart}' and '${dateEnd}' `;
 
     const data = await mysql.query(
-      `SELECT 
-        t.description, t.payee, t.date, t.amount, cat.name category, subcat.name subcategory from transactions t
-        left join categories cat on t.category_id = cat.id
-        left join categories subcat on t.sub_category_id = subcat.id
-      where description not like 'ONLINE TRANSFER TO%' ${dateRange}
+      `${TRANSACTION_QUERY} ${dateRange}
       ORDER BY
         date desc
       `
