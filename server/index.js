@@ -44,24 +44,6 @@ app.get("/spending", async (req, res) => {
   }
 });
 
-app.get("/spending/date", async (req, res) => {
-  try {
-    const dateStart = "2012-03-11";
-    const dateEnd = "2020-12-11";
-    const dateRange = `and t.date between '${dateStart}' and '${dateEnd}' `;
-
-    const data = await mysql.query(
-      `${TRANSACTION_QUERY} ${dateRange}
-      ORDER BY
-        date desc
-      `
-    );
-    res.send({ data });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 app.get("/monthly", async (req, res) => {
   const monthCount = 20;
   try {
@@ -69,11 +51,10 @@ app.get("/monthly", async (req, res) => {
       ? `and description like '%${req.query.likeQuery}%' `
       : "";
 
-    // category 93 === outgoing transfers
     const data = await mysql.query(`
       SELECT DATE_FORMAT(date, "%Y-%m") AS Month, SUM(amount) as sum
       FROM transactions
-      where category_id != 93 ${likeQuery}
+      ${likeQuery}
       GROUP BY DATE_FORMAT(date, "%Y-%m") 
       order by Month desc
       limit ${monthCount}
