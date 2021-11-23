@@ -5,6 +5,7 @@ const mysql = require("node-mysql-helper");
 const transactionController = require("./controllers/transactions");
 const app = express();
 const { asyncForEach } = require("./utilities/helpers");
+const { TRANSACTION_QUERY } = require("./utilities/constants");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -31,11 +32,7 @@ app.get("/spending", async (req, res) => {
       : "";
 
     const data = await mysql.query(
-      `SELECT 
-        t.description, t.payee, t.date, t.amount, cat.name category, subcat.name subcategory from transactions t
-        left join categories cat on t.category_id = cat.id
-        left join categories subcat on t.sub_category_id = subcat.id
-      where description not like 'ONLINE TRANSFER TO%' ${likeQuery}
+      `${TRANSACTION_QUERY} ${likeQuery}
       ORDER BY
         date desc
       LIMIT

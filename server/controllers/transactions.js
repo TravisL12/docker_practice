@@ -1,3 +1,5 @@
+const { TRANSACTION_QUERY } = require("../utilities/constants");
+
 async function getCategory(mysql, name, parentId) {
   if (!name) return name;
 
@@ -74,15 +76,11 @@ module.exports = {
     try {
       const inserted = await mysql.insert("transactions", transaction);
       const newTrans = await mysql.query(
-        `SELECT 
-        t.description, t.payee, t.date, t.amount, cat.name category, subcat.name subcategory from transactions t
-        left join categories cat on t.category_id = cat.id
-        left join categories subcat on t.sub_category_id = subcat.id
-        where description not like 'ONLINE TRANSFER TO%' and t.id=${inserted.insertId}`
+        `${TRANSACTION_QUERY} and t.id=${inserted.insertId}`
       );
       return { ...newTrans[0] };
     } catch (err) {
-      // console.log("Error transaction:", err.message);
+      console.log("Error transaction:", err.message);
       return;
     }
   },

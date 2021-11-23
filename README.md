@@ -23,7 +23,8 @@ Node running on `node:12` image ([from here](https://nodejs.org/de/docs/guides/n
 
 Using Docker compose image for MySQL 5.7
 
-- Using [`mysql-migrations`](https://github.com/kawadhiya21/mysql-migrations) with [`mysql`](https://github.com/mysqljs/mysql) to handle database.
+- Using [`mysql-migrations`](https://github.com/kawadhiya21/mysql-migrations) with [`mysql`](https://github.com/mysqljs/mysql) and [`node-mysql-helper`](https://github.com/gdbate/node-mysql-helper) to handle database.
+- Checkout the MySQL [cheatsheet](https://devhints.io/mysql) too.
 - Get database container name `docker ps` (use NAMES column value)
 - Access CLI for mysql `docker exec -it backend_mysql-db_1 mysql -uroot -p` (or `-u<username used for db creation>` i.e. `-uuser`)
 - Add migration `docker exec -it backend_node-server_1 node migrations.js add migration create_table_users`
