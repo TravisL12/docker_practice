@@ -27,12 +27,8 @@ mysql.connect(mysqlOptions);
 
 app.get("/spending", async (req, res) => {
   try {
-    const likeQuery = req.query.likeQuery
-      ? `and description like '%${req.query.likeQuery}%' `
-      : "";
-
     const data = await mysql.query(
-      `${TRANSACTION_QUERY} ${likeQuery}
+      `${TRANSACTION_QUERY}
       ORDER BY
         date desc
       LIMIT
@@ -44,21 +40,16 @@ app.get("/spending", async (req, res) => {
   }
 });
 
-app.get("/monthly", async (req, res) => {
-  const monthCount = 20;
+app.get("/search", async (req, res) => {
   try {
-    const likeQuery = req.query.likeQuery
-      ? `and description like '%${req.query.likeQuery}%' `
-      : "";
-
-    const data = await mysql.query(`
-      SELECT DATE_FORMAT(date, "%Y-%m") AS Month, SUM(amount) as sum
-      FROM transactions
-      ${likeQuery}
-      GROUP BY DATE_FORMAT(date, "%Y-%m") 
-      order by Month desc
-      limit ${monthCount}
-  `);
+    const data = await mysql.query(
+      `${TRANSACTION_QUERY} and description like CONCAT('%',?,'%')
+      ORDER BY
+        date desc
+      LIMIT
+        20000`,
+      req.query.likeQuery
+    );
 
     res.send({ data });
   } catch (error) {
